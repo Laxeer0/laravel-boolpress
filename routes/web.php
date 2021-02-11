@@ -20,15 +20,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::redirect('home','posts');
 
-Route::prefix('free-zone')->group(function(){
-    Route::get('/', 'TestController@guest')->name("home-freezone");
-});
+Route::resource('posts', 'PostsController')->middleware('auth');
 
-Route::prefix('restricted-zone')->middleware('auth')->group(function(){
-    Route::get('/', 'TestController@logged')->name('home-restricted');
-});
+Route::resource('posts', 'PostsController')->only([
+    'index', 'show'
+]);
 
 
 
